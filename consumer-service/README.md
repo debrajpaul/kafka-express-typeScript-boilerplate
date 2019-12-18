@@ -1,10 +1,10 @@
-# kafka-express-typeScript-boilerplate
+# consumer_service
 
-This is a boilerplate project for rest applications using Node.js, Express.js, TypeScript, Kafka and Docker.
+This is a boilerplate project for rest applications using Node.js, Express.js, TypeScript and Docker.
 
 ## What is this repository for?
 
-    produce and consumer service.
+    loyalty service.
 
     Version:- 1.0
     Git clone :-https://github.com/debrajpaul/kafka-express-typeScript-boilerplate.git
@@ -25,26 +25,17 @@ This is a boilerplate project for rest applications using Node.js, Express.js, T
     * In terminal go to your project directory
     * In terminal type "npm i" to add all dependencies.
 
-## .env file (producer and comsumer respectively)
+## .env file (example)
 
 ```
-PORT=7021
-DEBUG=app,app:*
-PROTOCOL=http
-
 PORT=8021
 DEBUG=app,app:*
 PROTOCOL=http
 ```
 
-## curl http call (producer and comsumer respectively)
+## curl http call (example)
 
 ```
-curl -X GET \
-  http://127.0.0.1:7021/producer-service/produce \
-  -H 'Postman-Token: a993becc-56b5-4393-83ed-2837e4bbfecf' \
-  -H 'cache-control: no-cache'
-
 curl -X GET \
   http://127.0.0.1:8021/consumer-service/consumer \
   -H 'Postman-Token: d135735f-c627-4ed9-ab26-49dd48a61417' \
@@ -55,6 +46,9 @@ curl -X GET \
 
     In terminal go to your project directory
     * Type "npm run watch"
+    or for production
+    * Type "npm run build"
+    * Type "npm start"
 
 ## Who do I talk to?
 
@@ -63,4 +57,4 @@ curl -X GET \
 
 ## License
 
-        Apache License
+         Apache License
