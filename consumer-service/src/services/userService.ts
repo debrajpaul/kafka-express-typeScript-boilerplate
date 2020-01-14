@@ -64,7 +64,8 @@ export default class UsersService {
                     { topic: "getData", partition: 0 }
                 ],
                 {
-                    autoCommit: false
+                    autoCommit: false,
+                    fromOffset: true
                 }
             );
 
