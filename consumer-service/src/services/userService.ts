@@ -1,6 +1,7 @@
 import numeral from "numeral";
 import log from "../utils/logger";
 import kafka from "kafka-node";
+import snappy from "snappy";
 
 /**
  * @class
@@ -60,6 +61,38 @@ export default class UsersService {
             let consumer = new kafka.Consumer(
                 new kafka.KafkaClient(),
                 [
+                    { topic: "remoteCall", partition: 0 },
+                    { topic: "getData", partition: 0 }
+                ],
+                {
+                    autoCommit: false,
+                    fromOffset: true
+                }
+            );
+
+            consumer.on("message", function(message) {
+                log("app:users:comsumerEventCall", message);
+
+                /** { topic: 'cat', value: 'I have 385 cats', offset: 412, partition: 0, highWaterOffset: 413, key: null } */
+            });
+            return {};
+        } catch (ex) {
+            throw { result: ex };
+        }
+    };
+    /**
+     * @function
+     * @instance
+     * @memberof Users
+     * @name comsumerEventCalls
+     * @returns success Object or error object.
+     * @description user signup function
+     */
+    comsumerEventCalls = async () => {
+        try {
+            let consumer = new kafka.Consumer(
+                new kafka.KafkaClient(),
+                [
                     { topic: "cat", partition: 0 },
                     { topic: "getData", partition: 0 }
                 ],
@@ -70,6 +103,7 @@ export default class UsersService {
             );
 
             consumer.on("message", function(message) {
+                //this.uncompress(message)
                 log("app:users:userSignup", message);
 
                 /** { topic: 'cat', value: 'I have 385 cats', offset: 412, partition: 0, highWaterOffset: 413, key: null } */
@@ -78,5 +112,19 @@ export default class UsersService {
         } catch (ex) {
             throw { result: ex };
         }
+    };
+
+    uncompress = (compressed: any) => {
+        new Promise((resolve, reject) => {
+            snappy.uncompress(compressed, { asBuffer: false }, function(
+                err,
+                original
+            ) {
+                if (err) return reject(err);
+                return resolve(original);
+            });
+        }).then(data => {
+            return data;
+        });
     };
 }
