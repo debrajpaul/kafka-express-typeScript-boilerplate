@@ -1,6 +1,8 @@
 import numeral from "numeral";
 import log from "../utils/logger";
 import kafka from "kafka-node";
+import snappy from "snappy";
+import { stringify } from "querystring";
 
 /**
  * @class
@@ -46,6 +48,51 @@ export default class UsersService {
             log("app:users:getMemoryUsageDetails", ex);
         }
     };
+    /**
+     * @function
+     * @instance
+     * @memberof Users
+     * @name producerEventCall
+     * @returns success Object or error object.
+     * @description user signup function
+     */
+    producerEventCall = async () => {
+        try {
+            let producer = new kafka.Producer(new kafka.KafkaClient());
+            let count = 0;
+            producer.on("ready", function() {
+                log("app:users:producerEventCall", "ready");
+                setInterval(function() {
+                    let payloads = [
+                        {
+                            topic: "remoteCall",
+                            messages: `data ${count}`,
+                            partition: 0,
+                            timestamp: Date.now()
+                        },
+                        {
+                            topic: "getData",
+                            messages: `getdata from an event call--> ${count}`,
+                            partition: 0,
+                            timestamp: Date.now()
+                        }
+                    ];
+
+                    producer.send(payloads, (err: any, data: any) => {
+                        log("app:users:producerEventCall", data);
+                        count += 1;
+                    });
+                }, 5000);
+            });
+
+            producer.on("error", err => {
+                log("app:users:producerEventCall", err);
+            });
+            return {};
+        } catch (ex) {
+            throw { result: ex };
+        }
+    };
 
     /**
      * @function
@@ -55,17 +102,18 @@ export default class UsersService {
      * @returns success Object or error object.
      * @description user signup function
      */
-    producerEventCall = async () => {
+    producerEventCalls = async () => {
         try {
             let producer = new kafka.Producer(new kafka.KafkaClient());
             let count = 0;
+            const compressData: string = this.compressDataEncy(count);
             producer.on("ready", function() {
                 log("app:users:userSignup", "ready");
                 setInterval(function() {
                     let payloads = [
                         {
                             topic: "cat",
-                            messages: `I have ${count} cats`,
+                            messages: compressData,
                             partition: 0,
                             timestamp: Date.now()
                         },
@@ -91,5 +139,19 @@ export default class UsersService {
         } catch (ex) {
             throw { result: ex };
         }
+    };
+
+    compressDataEncy = (count: any): string => {
+        new Promise((resolve, reject) => {
+            snappy.compress(`I have ${count} cats`, function(err, compressed) {
+                if (err) return reject(err);
+                console.log("compressed is a Buffer", compressed);
+                // return it as a string
+                return resolve(compressed.toString());
+            });
+        }).then((data: any) => {
+            return data.toString();
+        });
+        return "";
     };
 }
