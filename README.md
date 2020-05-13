@@ -1,6 +1,6 @@
 # Kafka express typeScript boilerplate
 
-  This is an open source project to create boiler plate code set up for a simple TypeScript Node JS server.
+    This is an open source project to create boiler plate code set up for a simple TypeScript Node JS server.
         * Apache Kafka to make internal communication more simpler
         * Swagger has also been implemented for easier documentation.
         * Jest set up is also there to support testing.
