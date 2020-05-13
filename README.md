@@ -1,6 +1,12 @@
-# kafka-express-typeScript-boilerplate
+# Kafka express typeScript boilerplate
 
-This is a boilerplate project for rest applications using Node.js, Express.js, TypeScript, Kafka and Docker.
+  This is an open source project to create boiler plate code set up for a simple TypeScript Node JS server.
+        * Apache Kafka to make internal communication more simpler
+        * Swagger has also been implemented for easier documentation.
+        * Jest set up is also there to support testing.
+        * Docker set up has been made to make life easier.
+        * Inputs to REST API can be validated here using ajv.
+        * Mongoose is here to help you with the database schema and connection.
 
 ## What is this repository for?
 
