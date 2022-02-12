@@ -18,7 +18,7 @@
         "start": "NODE_ENV=production node ./dist/app.js"
     },
     "dependencies": {
-        "ajv": "^6.5.3",
+        "ajv": "^6.12.3",
         "bluebird": "^3.7.2",
         "cors": "^2.8.4",
         "debug": "^4.1.1",
